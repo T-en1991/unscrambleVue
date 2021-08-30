@@ -14,13 +14,13 @@ VUE2.x&&VUE3.x解读
 ------
 vue的项目结构大体如下：  
 * ## __dist__  
-    >ex：构建后文件存放的目录。构建时通过rollup进行打包的，构建的配置及防呆代码在script中
+    > ex：构建后文件存放的目录。构建时通过rollup进行打包的，构建的配置及防呆代码在script中
 * ## __flow__  
-    >ex：js是弱类型，这里用flow进行了变量声明，flow和typescript差不多
+    > ex：js是弱类型，这里用flow进行了变量声明，flow和typescript差不多
 * ## __node_modules__  
-    ex:项目依赖
+    > ex:项目依赖
 * ## __script__  
-    >ex：包含与构建相关的脚本和配置文件。代码写完以后，要进行打包吧？从哪里进入，打包到哪里，打包的时候做什么判断等等配置
+    > ex：包含与构建相关的脚本和配置文件。代码写完以后，要进行打包吧？从哪里进入，打包到哪里，打包的时候做什么判断等等配置
     - ### alias.js  
       ex：修改别名。这个文件就是尤大佬将常用的文件入口取一个自己喜欢的名字，以后找这个文件地址，就用别名就行
     - ### build.js  
@@ -31,20 +31,20 @@ vue的项目结构大体如下：
       ex：功能开关。
 * ## __src__  
     - ### compiler  
-      >ex:待补充  
+      > ex:待补充  
     - ### core   
-      >ex:待补充  
+      > ex:待补充  
     - ### platforms    
-      >ex:待补充
+      > ex:待补充
     - ### shared    
-      >ex:待补充
+      > ex:待补充
 * ## __.babelrc.js__  
-      >ex：babale的配置信息
+  > ex：babale的配置信息
 * ## __.eslintrc.js__  
-      >ex：eslint的配置信息
+  > ex：eslint的配置信息
 * ## __.flowconfig__  
-      >ex：flow的配置信息
+  > ex：flow的配置信息
 * ## __.gitignore__  
-     >ex：git忽略内容
+  > ex：git忽略内容
 * ## __package.json__  
-     >ex：独立发布的包的目录
+  > ex：独立发布的包的目录
