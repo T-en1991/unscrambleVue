@@ -40,5 +40,5 @@ vue的项目结构大体如下：
       ex：flow的配置信息
 * __.gitignore__  
      ex：git忽略内容
-* __package.json__
+* __package.json__  
      ex：独立发布的包的目录
