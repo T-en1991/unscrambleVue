@@ -84,10 +84,23 @@ vue的项目结构大体如下：
 
 三、src源码详解  
 ----
-  * ### __compiler__
-    - 待补充
-  * ### __core__
-    - 待补充
+  * ### __compiler__   
+    - 待补充   
+  * ### __core__   
+    - ex：核心模块  
+      *  #### __components__   
+        > 组件  
+      *  #### __global-api__   
+        > 全局api
+      *  #### __observer__
+        > 观察者
+      *  #### __util__
+        > 工具函数
+      *  #### __vdom__  
+      >   虚拟dom  
+      *  #### __instance__
+      >  instance
+      
   * ### __platforms__
     - 待补充
   * ### __shared__

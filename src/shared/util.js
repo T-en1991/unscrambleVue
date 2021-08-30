@@ -176,38 +176,44 @@ export function cached<F: Function> (fn: F): F {
 // endregion
 
 
-/**
- * Camelize a hyphen-delimited string.
+// region camelize 将a-b连字符转换为aB这种小驼峰，并且开启缓存
+/*
+camelize('kkk-zzz-hhh');   kkkZzzHzz;
+replace中的第一个参数是正则表达式时，第二个参数可以是一个函数，可以接受多个参数。其中，第一个参数是捕捉到的内容，第二个参数是捕捉到的组匹配（有多少个组匹配，就有多少个对应的参数）
+此外，最后还可以添加两个参数，倒数第二个参数是捕捉到的内容在整个字符串中的位置（比如从第五个位置开始），最后一个参数是原字符串
+
+可以参考这篇文章 https://blog.csdn.net/qq_38694034/article/details/102932092
  */
-const camelizeRE = /-(\w)/g
+
+
+const camelizeRE = /-(\w)/g;//匹配—后面的所有字符
 export const camelize = cached((str: string): string => {
+  //这里 _ 是 -(\w)匹配的值 c是(\w)匹配的值
   return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '')
 })
+// endregion
 
-/**
- * Capitalize a string.
- */
+// region capitalize 首字母大写，并且开启缓存
 export const capitalize = cached((str: string): string => {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+  return str.charAt(0).toUpperCase() + str.slice(1)//首字符大写，并且拼接后面的
 })
+// endregion
 
-/**
- * Hyphenate a camelCase string.
- */
+
+// region 将驼峰命名转换成连字符，并且开启缓存
 const hyphenateRE = /\B([A-Z])/g
 export const hyphenate = cached((str: string): string => {
+  //$1、$2、...、$99	与 regexp 中的第 1 到第 99 个子表达式相匹配的文本。
   return str.replace(hyphenateRE, '-$1').toLowerCase()
 })
+// endregion
 
-/**
- * Simple bind polyfill for environments that do not support it,
- * e.g., PhantomJS 1.x. Technically, we don't need this anymore
- * since native bind is now performant enough in most browsers.
- * But removing it would mean breaking code that was able to run in
- * PhantomJS 1.x, so this must be kept for backward compatibility.
- */
 
 /* istanbul ignore next */
+// region polyfillBind polyfill为了防治目标平台没有对应的接口的兼容操作
+/*
+bind  把某个函数的执行环境指定到某个对象里去   bind不兼容低版本ie
+ */
 function polyfillBind (fn: Function, ctx: Object): Function {
   function boundFn (a) {
     const l = arguments.length
@@ -218,20 +224,26 @@ function polyfillBind (fn: Function, ctx: Object): Function {
       : fn.call(ctx)
   }
 
-  boundFn._length = fn.length
+  boundFn._length = fn.length//fn.length就是形参个数
   return boundFn
 }
+// endregion
 
+
+// region bind 根据当前代码环境判断是否支持bind，支持就原生不支持就polyfillBind
 function nativeBind (fn: Function, ctx: Object): Function {
   return fn.bind(ctx)
 }
-
 export const bind = Function.prototype.bind
   ? nativeBind
   : polyfillBind
+// endregion
 
-/**
- * Convert an Array-like object to a real Array.
+
+// region 类数组转换为真数组，而且可以指定转换下标的起始点
+/*
+类数组：nodeList  arguments
+类数组拥有部分数组的功能
  */
 export function toArray (list: any, start?: number): Array<any> {
   start = start || 0
@@ -242,20 +254,20 @@ export function toArray (list: any, start?: number): Array<any> {
   }
   return ret
 }
+// endregion
 
-/**
- * Mix properties into target object.
- */
+
+// region 将指定对象的属性混入到目标对象中，如果目标对象中已存在，则覆盖
 export function extend (to: Object, _from: ?Object): Object {
   for (const key in _from) {
     to[key] = _from[key]
   }
   return to
 }
+// endregion
 
-/**
- * Merge an Array of Objects into a single Object.
- */
+
+// region toObject 将配置项转换为一个obj   [{x:1},{y:2},{z:3}]====>{x:1,y:2,z:3}
 export function toObject (arr: Array<any>): Object {
   const res = {}
   for (let i = 0; i < arr.length; i++) {
@@ -265,6 +277,8 @@ export function toObject (arr: Array<any>): Object {
   }
   return res
 }
+// endregion
+
 
 /* eslint-disable no-unused-vars */
 
@@ -273,50 +287,80 @@ export function toObject (arr: Array<any>): Object {
  * Stubbing args to make Flow happy without leaving useless transpiled code
  * with ...rest (https://flow.org/blog/2017/05/07/Strict-Function-Call-Arity/).
  */
+// region noop  防呆设计   设计一个空函数，主要作用是给某些需要函数作为参数的搞基函数提供默认值，避免undefined的数据传入
 export function noop (a?: any, b?: any, c?: any) {}
+// endregion
+
 
 /**
  * Always return false.
  */
+// region no    专门返回no的函数
 export const no = (a?: any, b?: any, c?: any) => false
+// endregion
+
 
 /* eslint-enable no-unused-vars */
 
 /**
  * Return the same value.
  */
+// region identity    返回相同值，值得拷贝
 export const identity = (_: any) => _
+// endregion
+
+
 
 /**
  * Generate a string containing static keys from compiler modules.
  */
+
+// region genStaticKeys   从编译模块中生产一个静态的建的字符串
 export function genStaticKeys (modules: Array<ModuleOptions>): string {
+  //接受一个对象数组，然后取出其中的staticKeys，拼接成一个keys的数组，再喊会这个数组的字符串形式
   return modules.reduce((keys, m) => {
     return keys.concat(m.staticKeys || [])
   }, []).join(',')
 }
+// endregion
+
 
 /**
  * Check if two values are loosely equal - that is,
  * if they are plain objects, do they have the same shape?
  */
+
+// region looseEqual  判断两个值是不是相等
+/*
+1.是不是全等
+2.是不是object
+3.是不是数组
+4.数组比较长度和每一项内容，递归
+5.是不是时间
+6.对象的长度，和每一key值都相等，递归
+ */
+
 export function looseEqual (a: any, b: any): boolean {
-  if (a === b) return true
-  const isObjectA = isObject(a)
+  if (a === b) return true//全等则相等
+  const isObjectA = isObject(a)//是不是对象
   const isObjectB = isObject(b)
-  if (isObjectA && isObjectB) {
+  if (isObjectA && isObjectB) {//是对象
     try {
-      const isArrayA = Array.isArray(a)
+      const isArrayA = Array.isArray(a)//是不是数组
       const isArrayB = Array.isArray(b)
-      if (isArrayA && isArrayB) {
+      if (isArrayA && isArrayB) {//是数组
         return a.length === b.length && a.every((e, i) => {
+          //比较每一项是不是都相同
           return looseEqual(e, b[i])
         })
       } else if (a instanceof Date && b instanceof Date) {
+        //时间戳比较
         return a.getTime() === b.getTime()
       } else if (!isArrayA && !isArrayB) {
+        //不是数组
         const keysA = Object.keys(a)
         const keysB = Object.keys(b)
+        //两个对象长度一样，且key值一样
         return keysA.length === keysB.length && keysA.every(key => {
           return looseEqual(a[key], b[key])
         })
@@ -326,30 +370,38 @@ export function looseEqual (a: any, b: any): boolean {
       }
     } catch (e) {
       /* istanbul ignore next */
-      return false
+      return false//步骤出错
     }
-  } else if (!isObjectA && !isObjectB) {
-    return String(a) === String(b)
+  } else if (!isObjectA && !isObjectB) {//如果都不是对象
+    return String(a) === String(b)//转成string比较
   } else {
     return false
   }
 }
+// endregion
+
+
 
 /**
  * Return the first index at which a loosely equal value can be
  * found in the array (if value is a plain object, the array must
  * contain an object of the same shape), or -1 if it is not present.
  */
+
+// region looseIndexOf  返回一个数组项目在数组中的索引
 export function looseIndexOf (arr: Array<mixed>, val: mixed): number {
   for (let i = 0; i < arr.length; i++) {
     if (looseEqual(arr[i], val)) return i
   }
   return -1
 }
+// endregion
+
 
 /**
  * Ensure a function is called only once.
  */
+// region 代码片段注释 高级函数工具，只会执行一次的函数
 export function once (fn: Function): Function {
   let called = false
   return function () {
@@ -359,3 +411,4 @@ export function once (fn: Function): Function {
     }
   }
 }
+// endregion
