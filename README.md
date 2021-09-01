@@ -125,7 +125,7 @@ vue的项目结构大体如下：
       > - next=tick.js  
       > - options.js  
       > - perf.js  
-      > - props.js
+      > - props.js  
       *  #### __vdom__  
       >   虚拟dom  
       *  #### __instance__

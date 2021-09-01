@@ -63,7 +63,8 @@ if (inBrowser) {
 
 // this needs to be lazy-evaled because vue may be required before
 // vue-server-renderer can set VUE_ENV
-let _isServer
+//服务器渲染
+let _isServer//判断是否是在服务器渲染的环境下
 export const isServerRendering = () => {
   if (_isServer === undefined) {
     /* istanbul ignore if */
@@ -78,21 +79,24 @@ export const isServerRendering = () => {
   return _isServer
 }
 
-// detect devtools
+// detect devtools  判断是否开启开发者工具
 export const devtools = inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
 /* istanbul ignore next */
+//判断某个函数是否是原生函数
 export function isNative (Ctor: any): boolean {
   return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
 }
 
+//判断环境是否拥有symbol和reflect
 export const hasSymbol =
   typeof Symbol !== 'undefined' && isNative(Symbol) &&
   typeof Reflect !== 'undefined' && isNative(Reflect.ownKeys)
 
-let _Set
+let _Set//存储Set结构的数据结构接口
 /* istanbul ignore if */ // $flow-disable-line
 if (typeof Set !== 'undefined' && isNative(Set)) {
+  //原生有用原生的
   // use native Set when available.
   _Set = Set
 } else {
