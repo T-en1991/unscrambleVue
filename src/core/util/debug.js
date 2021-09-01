@@ -32,18 +32,20 @@ if (process.env.NODE_ENV !== 'production') {
     .replace(classifyRE, c => c.toUpperCase())
     .replace(/[-_]/g, '')
 
-  //错误打印函数
+  //警告打印函数
   warn = (msg, vm) => {
+    //vm实例首先要存在，不存在返回''
     const trace = vm ? generateComponentTrace(vm) : ''
 
+    //如果在配置信息里面配置了warm的处理函数，在warm执行的时候，执行自己的函数，没有的话按照默认的走
     if (config.warnHandler) {
       config.warnHandler.call(null, msg, vm, trace)
-    } else if (hasConsole && (!config.silent)) {
+    } else if (hasConsole && (!config.silent)) {//当前环境是否支持console，并且slient是否打开了
       console.error(`[Vue warn]: ${msg}${trace}`)
     }
   }
 
-  //警告打印函数
+  //警告打印函数，只是告诉你一个信息这里是console.warn的
   tip = (msg, vm) => {
     if (hasConsole && (!config.silent)) {
       console.warn(`[Vue tip]: ${msg}` + (
@@ -80,6 +82,13 @@ if (process.env.NODE_ENV !== 'production') {
       (name ? `<${classify(name)}>` : `<Anonymous>`) +
       (file && includeFile !== false ? ` at ${file}` : '')
     )
+  }
+
+  function fn(){
+    let cid='cid';
+    function fn1(){
+      console.log(1)
+    }
   }
 
 
