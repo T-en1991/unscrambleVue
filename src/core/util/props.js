@@ -1,5 +1,7 @@
 /* @flow */
 
+//值得校验，props是否有效的
+
 import { warn } from './debug'
 import { observe, toggleObserving, shouldObserve } from '../observer/index'
 import {

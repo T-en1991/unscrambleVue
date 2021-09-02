@@ -13,21 +13,27 @@ VUE2.x&&VUE3.x解读
 
 零、学习顺序
 -------
-vue源码的文件有很多，同时也存在各种嵌套关系，使得初学者不知道从何入手，这里推荐一种学习的顺序。  
+vue源码的文件有很多，同时也存在各种嵌套关系，使得初学者不知道从何入手，这里推荐一种学习的顺序  
 
 * 了解flow
 * 了解rollup  
 * 了解文件结构介绍  
 * 随便看一眼babelrc、eslintrc、flowconfig、gitignore
 * 掌握scripts中的配置代码
-  - feature-flag  
-  - alias  
-  - config   
-  - build  
+  - 了解feature-flag  
+  - 掌握alias  
+  - 掌握config   
+  - 掌握build  
  * 掌握core/config.js  
  * 掌握core/util  
-    - debug.js  
-    - env.js
+    - 了解debug.js   
+    - 掌握env.js  
+    - 了解lang.js  
+    - 掌握next-tick.js  
+    - 了解error.js  
+    - 随便看看perf.js  
+    - 掌握options.js  
+    - 掌握props.js  
   
 一、文件结构介绍  
 ------
@@ -45,9 +51,9 @@ vue的项目结构大体如下：
     - ### build.js  
       ex：打包的逻辑代码。包含知道用户输了什么命令，打包成什么环境，要不要压缩，提示语报错信息等等的内容
     - ### config.js  
-      ex：打包的配置信息就在这儿。尤大佬用了rollup进行打包的，配置可以在command中写，不过应该没人会这么做，那么多那么长，谁看得清啊。也可以用一个写好的配置文件，命令去读比如（rollup --c ./build/rollup.config.js）。这里用的rolluo.rollup()方法去调用配置信息的，毕竟配置信息是不能固定死的，需要根据不同场景变化的。
+      ex：打包的配置信息就在这儿。尤大佬用了rollup进行打包的，配置可以在command中写，不过应该没人会这么做，那么多那么长，谁看得清啊。也可以用一个写好的配置文件，命令去读比如（rollup --c ./build/rollup.config.js）。这里用的rolluo.rollup()方法去调用配置信息的，毕竟配置信息是不能固定死的，需要根据不同场景变化的  
     - ### feature-tag.js  
-      ex：功能开关。
+      ex：功能开关
 * ## __src__  
     - ### compiler  
       > ex:待补充  
@@ -74,8 +80,8 @@ vue的项目结构大体如下：
 ------  
   * ### __alias.js__  
     - 简述   
-      > 该文件是对常见模块的入口，做一个路径解析和重命名。   
-       关键点：该文件比较简单。主要是一个函数和一个暴露出去的对象。     
+      > 该文件是对常见模块的入口，做一个路径解析和重命名    
+       关键点：该文件比较简单。主要是一个函数和一个暴露出去的对象     
         1、对象是对路径的重命名   
         2、函数是拿到该对象的一个全局路径   
        > #### **详解在script/alias.js中**  
@@ -116,16 +122,24 @@ vue的项目结构大体如下：
       *  #### __util__
         > 工具函数
       > - debug.js    
-          ex：这是一个报错信息处理的文件
+          ex：这是一个报错信息处理的文件  
       > - env.js  
-          ex：这是一个根据不同环境获取信息的文件。文件中有一个比较有意思的函数，有大段的注释
-      > - error.js    
-      > - env.js  
-      > - lang.js  
+          ex：这是一个根据不同环境获取信息的文件。文件中有一个比较有意思的函数，有大段的注释  
+      > - error.js     
+          ex：如何处理报错信息   
+      > - env.js   
+          ex：判断各种环境，获取各种环境信息   
+      > - lang.js   
+          ex：待补充  
       > - next=tick.js  
+          ex：nextTick的处理函数  
       > - options.js  
-      > - perf.js  
-      > - props.js  
+          ex：待补充   
+      > - perf.js   
+          ex：记录性能的  
+      > - props.js    
+          ex：待补充  
+      
       *  #### __vdom__  
       >   虚拟dom  
       *  #### __instance__
