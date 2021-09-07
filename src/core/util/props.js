@@ -72,14 +72,18 @@ export function validateProp (
 }
 
 /**
- * Get the default value of a prop.
+当value的值为undefined时
+ 说明父组件根本没有传过来这个prop
+ 那么我们需要通过下面这个函数来获取prop的默认值
+
  */
+
 function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): any {
   // no default, return undefined
   if (!hasOwn(prop, 'default')) {
     return undefined
   }
-  const def = prop.default
+  const def = prop.default//获取default字段的值
   // warn against non-factory defaults for Object & Array
   if (process.env.NODE_ENV !== 'production' && isObject(def)) {
     warn(
@@ -92,13 +96,15 @@ function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): a
   // the raw prop value was also undefined from previous render,
   // return previous default value to avoid unnecessary watcher trigger
   if (vm && vm.$options.propsData &&
-    vm.$options.propsData[key] === undefined &&
+    vm.$options.propsData[key] === undefined &&//当有实例，且该实例在辈出回话的时候传入prop的值，并且指定key又没有完全传
     vm._props[key] !== undefined
   ) {
     return vm._props[key]
   }
   // call factory function for non-Function types
   // a value is Function if its prototype is function even across different execution context
+    // 如果type 标记的不是函数，说明这个props的函数是为了去执行之后返回一个真正的默认的值得工具函数
+    //如果传的就是一个函数，并且type也是，说明要的就是函数，返回即可
   return typeof def === 'function' && getType(prop.type) !== 'Function'
     ? def.call(vm)
     : def
@@ -219,20 +225,22 @@ function getTypeIndex (type, expectedTypes): number {
   }
   return -1
 }
-
+//获取不可用prop类型的信息
 function getInvalidTypeMessage (name, value, expectedTypes) {
   let message = `Invalid prop: type check failed for prop "${name}".` +
     ` Expected ${expectedTypes.map(capitalize).join(', ')}`
-  const expectedType = expectedTypes[0]
-  const receivedType = toRawType(value)
+    //我们的期望类型是【type1,type2,t3,t4】，我们那实际的类型是xxx 不符合规定
+  const expectedType = expectedTypes[0]//获取期望的第一个
+  const receivedType = toRawType(value)//获取数据的原始类型
   // check if we need to specify expected value
   if (
-    expectedTypes.length === 1 &&
+    expectedTypes.length === 1 &&//当期望类型本身只有一个的时候
+      //期望类型和接收到的类型都是可解释类型，但又不是布尔
     isExplicable(expectedType) &&
     isExplicable(typeof value) &&
     !isBoolean(expectedType, receivedType)
   ) {
-    message += ` with value ${styleValue(value, expectedType)}`
+    message += ` with value ${styleValue(value, expectedType)}`//期望得到什么值
   }
   message += `, got ${receivedType} `
   // check if we need to specify received value
@@ -241,8 +249,9 @@ function getInvalidTypeMessage (name, value, expectedTypes) {
   }
   return message
 }
-
+//格式化
 function styleValue (value, type) {
+  //根据type的几种类型，把value转换成对应的值类型
   if (type === 'String') {
     return `"${value}"`
   } else if (type === 'Number') {
@@ -252,11 +261,12 @@ function styleValue (value, type) {
   }
 }
 
-const EXPLICABLE_TYPES = ['string', 'number', 'boolean']
+const EXPLICABLE_TYPES = ['string', 'number', 'boolean']//预设的可解释类型
 function isExplicable (value) {
+  //判断是否是可解释类型，只要符合其中一项
   return EXPLICABLE_TYPES.some(elem => value.toLowerCase() === elem)
 }
-
+//判断是否是布尔值
 function isBoolean (...args) {
   return args.some(elem => elem.toLowerCase() === 'boolean')
 }
