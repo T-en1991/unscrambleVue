@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<style>
+
+</style>
+<body>
+
+</body>
+<script>
+
+  const arrayProto = Array.prototype
+  console.log(arrayProto)
+  const arrayMethods = Object.create(arrayProto)
+  console.log(arrayMethods)
+  const original = arrayProto['push']
+  console.log(original)
+  function mutator(...args){
+    const result = original.apply(this, args)
+    console.log(result);
+    const ob = this.__ob__
+    console.log(ob);
+  }
+  mutator()
+
+</script>
+</html>

@@ -90,7 +90,7 @@ export function isNative (Ctor: any): boolean {
 
 //判断环境是否拥有symbol和reflect
 export const hasSymbol =
-  typeof Symbol !== 'undefined' && isNative(Symbol) &&
+  typeof Symbol !== 'undefined' && isNative(Symbol)
   typeof Reflect !== 'undefined' && isNative(Reflect.ownKeys)
 
 let _Set//存储Set结构的数据结构接口

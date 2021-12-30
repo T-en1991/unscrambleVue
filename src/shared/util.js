@@ -139,7 +139,7 @@ export function makeMap (
 export const isBuiltInTag = makeMap('slot,component', true)
 // endregion
 
-// region isReservedAttribute 检查一个水性是不是vue的保留属性
+// region isReservedAttribute 检查一个属性是不是vue的保留属性
 export const isReservedAttribute = makeMap('key,ref,slot,slot-scope,is')
 // endregion
 
